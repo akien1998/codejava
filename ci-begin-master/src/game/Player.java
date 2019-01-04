@@ -5,21 +5,37 @@ import tklibs.SpriteUtils;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-public class Player {
-    BufferedImage image;
-    //float x,y;
-    Vector2D position;
+public class Player extends GameObject{
+        Sphere sphereLeft;
+        Sphere sphereRight;
+//    BufferedImage image;
+//    //float x,y;
+//    Vector2D position;
     public Player()
-    {
+    {   super();
         // ham khoi tao player
         this.image = SpriteUtils.loadImage("D:\\java_techkids\\ci-begin-master\\assets\\images\\players\\straight\\0.png");
-        this.position = new Vector2D(200,400);
+        //this.position = new Vector2D(200,400);
+        this.position.set(200,400);
+        this.sphereLeft = new Sphere();
+        this.sphereRight = new Sphere();
+        this.updateSherePosition();// luc nao cung nam canh player
     }
+
+
+
+    @Override
     public void run()
     {
+        super.run();
         this.move();
-        this.limitPosition();
+        this.limitPosition();// gioi han d chuyen
         this.fire();
+        this.updateSherePosition();
+    }
+    private void updateSherePosition() {
+    this.sphereLeft.position.set(this.position).add(-20,30);// position la player
+    this.sphereRight.position.set(this.position).add(30,30);
     }
 
     int count;//todo can su tiep
@@ -28,12 +44,16 @@ public class Player {
         count ++;
         if(count > 20) {// trong 20s moi ban 1 vien
             if (GameWindow.isFirePress) {
-                PlayerBullet bullet = new PlayerBullet();
-                //gan lai vi tri bullet = vt cua player
-                bullet.position = new Vector2D(this.position.x,this.position.y);// tuong tu duoi
-                // this.y la vt cua player
-                GamePanel.bullets.add(bullet);// add vien dạn vao mang
-                this.count =0;// de cho no ban lai tu dau
+                float startAngle = -(float)Math.PI/4;
+                float endAngle = -3*(float)Math.PI/4;
+                float offset = (endAngle - startAngle) /4;// goc giuwa hai lan dan canh nhau
+                for (int i = 0;i < 5;i++) {
+                    PlayerBullet bullet = new PlayerBullet();
+                    //gan lai vi tri bullet = vt cua player
+                    bullet.position.set(this.position.x - 15, this.position.y);
+                    bullet.velocity.setAngle(startAngle + offset * i);
+                    this.count = 0;// de cho no ban lai tu dau
+                }
             }
         }
     }
@@ -53,32 +73,36 @@ public class Player {
         }
         if(this.position.x > 384- this.image.getWidth())
         {
-            this.position.x = this.image.getWidth();
+            this.position.x =  384- this.image.getWidth();
         }
     }
 
     private void move() {
+        float vX =0,vY=0;
         if (GameWindow.isUpPress)
         {
-            this.position.substract(0,5);
+//            this.position.substract(0,5);
+            vY =-5;
         }
         if(GameWindow.isDownPress)
         {
-            this.position.add(0,5);
+//            this.position.add(0,5);
+            vY =5;
         }
         if(GameWindow.isLeftPress)
         {
-            this.position.substract(5,0);
+//            this.position.substract(5,0);
+            vX =-5;
         }
         if(GameWindow.isRightPress)
         {
-            this.position.add(5,0);
+//            this.position.add(5,0);
+            vX =5;
         }
+        this.velocity.set(vX,vY);
+        this.velocity.setLength(5);
+        //System.out.println(this.velocity);
     }
 
-    public void render(Graphics g)
-    {
-        //ham vẽ
-        g.drawImage(this.image,(int)this.position.x,(int)this.position.y,null);
-    }
+
 }

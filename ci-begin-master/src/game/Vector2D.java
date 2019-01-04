@@ -18,12 +18,25 @@ public class Vector2D {
         this.y+=y;
         return this;// todo trar ve chinh vector dc goi
     }
+    public Vector2D add(Vector2D other)//cong hai so x,y vao ai x,y thuoc tinh(cong 2 x,y cua ban dau va sau vector)
+    {
+
+        return this.add(other.x,other.y);// todo trar ve chinh vector dc goi
+    }
+
     public Vector2D substract(float x, float y)// ham -
     {
         this.x -=x;
         this.y-=y;
         return this;
     }
+
+    public Vector2D substract(Vector2D other)// ham -
+    {
+
+        return this.substract(other.x,other.y);
+    }
+
     public Vector2D scale(float rate)// todo ham nhan *// tuong tu nhu ham add
     {
         this.x*=rate;
@@ -36,6 +49,12 @@ public class Vector2D {
         this.y = y;
         return this;// tra ve chinh vector dc goi
     }
+    public Vector2D set(Vector2D other)//set de lam gan truc tiep so truyen vao overloading
+    {
+//        this.x = x;
+//        this.y = y;
+        return this.set(other.x,other.y);// tra ve chinh vector dc goi
+    }
     public Vector2D clone()// tao ra vector mowi giong het vector vua go
     {
         return new Vector2D(this.x,this.y);
@@ -43,14 +62,14 @@ public class Vector2D {
     public float getLength()// trar ve do dai cau vector,
     {
         // tinh toan do dai cua vector
-        return (float)Math.sqrt(this.x*this.x + this.y+this.y);//tinh canh huyn can cua binh phuong 22 canh
+        return (float)Math.sqrt(this.x*this.x + this.y*this.y);//tinh canh huyn can cua binh phuong 22 canh
     }
     public Vector2D setLength(float length)// goi den 1 vector truyen cho no 1 casi length
     {
         // tra ve tao do x,y moi
         float currentLength = this.getLength();// kiem tra leng != 0 vi neu ==0 thi k chia dc
         if (currentLength!=0) {
-            float rate = length / this.getLength(); // length mơi chia length cu
+            float rate = length / currentLength; // length mơi chia length cu
 //        this.x = this.x*rate; x cu * rate
 //        this.y = this.y*rate;y tuong tu ,
             // lam cach khac
@@ -67,10 +86,9 @@ public class Vector2D {
     {
         float currentLength = this.getLength();
         // x mơi = do dai cua vector
-        this.x =currentLength*(float)Math.cos(angle);
+        this.x = currentLength*(float)Math.cos(angle);
         this.y = currentLength*(float)Math.sin(angle);
         return this;
     }
-
 
 }

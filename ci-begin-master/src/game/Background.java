@@ -1,5 +1,6 @@
 package game;
 
+import game.render.SingleImageRenderer;
 import tklibs.SpriteUtils;
 
 import java.awt.*;
@@ -11,9 +12,12 @@ public class Background extends GameObject{
 
     public Background() {// ham toa rong
         super();// tuong duong this.position = new Vector2D();
-        this.image = SpriteUtils.loadImage("assets/images/background/0.png");
+//        BufferedImage image = SpriteUtils.loadImage("assets/images/background/0.png");
+        BufferedImage image = SpriteUtils.loadImage("D:\\java_techkids\\ci-begin-master\\assets\\images\\background\\0.png");
+        System.out.println(image);
         //this.position= new Vector2D(0,600-this.image.getHeight());
-        this.position.set(0,600 - this.image.getHeight());
+        this.renderer = new SingleImageRenderer(image);
+        this.position.set(0,600 - image.getHeight());
         this.velocity.set(0,1);
     }
 //

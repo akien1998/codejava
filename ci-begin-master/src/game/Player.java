@@ -1,9 +1,12 @@
 package game;
 
+import game.render.Animation;
+import game.render.SingleImageRenderer;
 import tklibs.SpriteUtils;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 public class Player extends GameObject{
         Sphere sphereLeft;
@@ -14,8 +17,13 @@ public class Player extends GameObject{
     public Player()
     {   super();
         // ham khoi tao player
-        this.image = SpriteUtils.loadImage("D:\\java_techkids\\ci-begin-master\\assets\\images\\players\\straight\\0.png");
+        ArrayList<BufferedImage> images = new ArrayList<>();
+        images.add(SpriteUtils.loadImage("D:\\java_techkids\\ci-begin-master\\assets\\images\\players\\straight\\0.png"));
+        images.add(SpriteUtils.loadImage("D:\\java_techkids\\ci-begin-master\\assets\\images\\players\\straight\\1.png"));
+        images.add(SpriteUtils.loadImage("D:\\java_techkids\\ci-begin-master\\assets\\images\\players\\straight\\2.png"));
+        //BufferedImage image = SpriteUtils.loadImage("D:\\java_techkids\\ci-begin-master\\assets\\images\\players\\straight\\0.png");
         //this.position = new Vector2D(200,400);
+        this.renderer = new Animation(images);
         this.position.set(200,400);
         this.sphereLeft = new Sphere();
         this.sphereRight = new Sphere();
@@ -63,17 +71,17 @@ public class Player extends GameObject{
         {
             this.position.y=0;// neu no < 0 thi cho gan cho no ow diem bat dau
         }
-        if (this.position.y > 600- this.image.getHeight())
+        if (this.position.y > 600- 48)
         {
-            this.position.y = 600- this.image.getHeight(); // neu chieu cao > 600 gan = khung mafn hinh
+            this.position.y = 600- 48; // neu chieu cao > 600 gan = khung mafn hinh
         }
         if(this.position.x < 0)
         {
             this.position.x =0;
         }
-        if(this.position.x > 384- this.image.getWidth())
+        if(this.position.x > 384- 32)
         {
-            this.position.x =  384- this.image.getWidth();
+            this.position.x =  384- 32;
         }
     }
 

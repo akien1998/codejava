@@ -1,5 +1,7 @@
 package game;
 
+import game.render.Renderer;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -33,9 +35,10 @@ public class GameObject {
         }
     }
     //ding nghia doi tuong
-    Vector2D velocity;
-    BufferedImage image;
-    Vector2D position;
+    public Vector2D velocity;
+    //public  BufferedImage image;
+    public  Vector2D position;
+    public Renderer renderer;
     public GameObject()// ham tao
     {
 
@@ -50,9 +53,9 @@ public class GameObject {
     public void render(Graphics g)
     {
         // hamrender giong nhau
-        if(this.image !=null)// != null nghia la da co anh vao roi
+        if(this.renderer !=null)// != null nghia la da co anh vao roi
         {
-            g.drawImage(this.image,(int)this.position.x,(int)this.position.y,null);
+            this.renderer.render(g,this);
         }
     }
 }

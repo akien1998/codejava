@@ -1,14 +1,17 @@
 package game;
 
 import game.render.Animation;
+import physics.BoxColider;
+import physics.Physics;
 import tklibs.SpriteUtils;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
-public class Sphere extends GameObject{
+public class Sphere extends GameObject {
     //Animation animation;
+    BoxColider boxColider;
 
     public Sphere()
     {
@@ -31,10 +34,11 @@ public class Sphere extends GameObject{
         count ++;
         if(count >20)//3 vien 1 giay 20mls
         {
-            Spherebullet bullet = new Spherebullet();
+            Spherebullet bullet = GameObject.recyle(Spherebullet.class);
             bullet.position.set(this.position);
             count =0;
         }
     }
+
 
 }

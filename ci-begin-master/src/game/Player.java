@@ -1,16 +1,24 @@
 package game;
 
+import game.enemy.Enemy;
+import game.enemy.Enemybullet;
 import game.render.Animation;
 import game.render.SingleImageRenderer;
+import physics.BoxColider;
+import physics.Physics;
 import tklibs.SpriteUtils;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
-public class Player extends GameObject{
+public class Player extends GameObject implements Physics {
         Sphere sphereLeft;
         Sphere sphereRight;
+    BoxColider boxColider;
+    frameCounter friceCounter;
+    int hp;
+    boolean imune;// bat tu cmnr
 //    BufferedImage image;
 //    //float x,y;
 //    Vector2D position;
@@ -23,16 +31,20 @@ public class Player extends GameObject{
         images.add(SpriteUtils.loadImage("D:\\java_techkids\\ci-begin-master\\assets\\images\\players\\straight\\2.png"));
         //BufferedImage image = SpriteUtils.loadImage("D:\\java_techkids\\ci-begin-master\\assets\\images\\players\\straight\\0.png");
         //this.position = new Vector2D(200,400);
-        this.renderer = new Animation(images);
+        this.renderer = new Animation(images);// hoat anh
         this.position.set(200,400);
         this.sphereLeft = new Sphere();
         this.sphereRight = new Sphere();
         this.updateSherePosition();// luc nao cung nam canh player
+        this.boxColider = new BoxColider(this,30,30);
+        this.friceCounter = new frameCounter(20);
+        this.hp = 3;
+        this.imune = false;// tao ar fail. chi true khi no ban trung la true
     }
 
 
 
-    @Override
+    @Override//ghi de len phuong thuc cua class cha
     public void run()
     {
         super.run();
@@ -40,28 +52,50 @@ public class Player extends GameObject{
         this.limitPosition();// gioi han d chuyen
         this.fire();
         this.updateSherePosition();
+        this.checkImune();
     }
+    int imuneCount;
+
+    private void checkImune() {
+        if (this.imune)
+        {
+            this.imuneCount ++;
+            if (this.imuneCount > 60)
+            {
+                this.imune = false;
+                this.imuneCount  = 0;
+            }
+        }
+    }
+
+
     private void updateSherePosition() {
-    this.sphereLeft.position.set(this.position).add(-20,30);// position la player
-    this.sphereRight.position.set(this.position).add(30,30);
+    this.sphereLeft.position.set(this.position).add(-30,15);// position la player
+    this.sphereRight.position.set(this.position).add(30,15);
     }
 
     int count;//todo can su tiep
 
     private void fire() {
-        count ++;
-        if(count > 20) {// trong 20s moi ban 1 vien
+
+        if(friceCounter.run()) {// trong 20s moi ban 1 vien
             if (GameWindow.isFirePress) {
-                float startAngle = -(float)Math.PI/4;
-                float endAngle = -3*(float)Math.PI/4;
-                float offset = (endAngle - startAngle) /4;// goc giuwa hai lan dan canh nhau
-                for (int i = 0;i < 5;i++) {
-                    PlayerBullet bullet = new PlayerBullet();
+                float startAngle = -(float) Math.PI / 4;
+                float endAngle = -3 * (float) Math.PI / 4;
+                float offset = (endAngle - startAngle) / 4;// goc giuwa hai lan dan canh nhau
+                for (int i = 0; i < 5; i++) {
+                    PlayerBullet bullet = GameObject.recyle(PlayerBullet.class);
                     //gan lai vi tri bullet = vt cua player
                     bullet.position.set(this.position.x - 15, this.position.y);
                     bullet.velocity.setAngle(startAngle + offset * i);
-                    this.count = 0;// de cho no ban lai tu dau
+                    this.friceCounter.reset();// de cho no ban lai tu dau
                 }
+//            if (GameWindow.isFirePress)
+//            {
+//                PlayerBullet bullet = new PlayerBullet();
+//                bullet.position.set(this.position);
+//                this.count =0;
+//            }
             }
         }
     }
@@ -113,4 +147,46 @@ public class Player extends GameObject{
     }
 
 
+
+    @Override
+    public BoxColider getBoxColider() {
+        return this.boxColider;
+    }
+
+    public void takeDamage(int damege) {
+        if (this.imune= true)
+        {
+            return;
+        }
+        this.hp -= damege;// 3 mau nhan 1 dam mat 1 mau
+        if (this.hp <=0)
+        {
+            this.hp = 0;
+            this.deactive();
+            this.sphereLeft.deactive();
+            this.sphereRight.deactive();
+        }else
+        {
+            this.imune = true;
+        }
+
+    }
+    int count1;
+    @Override
+    public void render(Graphics g) {
+        if (this.imune)
+        {
+            // nhay nhay
+            this.count1 ++;
+            if(this.count1 > 2)
+            {
+                super.render(g);
+                this.count1 = 0;
+            }
+
+        }
+        else {
+            super.render(g);
+        }
+    }
 }

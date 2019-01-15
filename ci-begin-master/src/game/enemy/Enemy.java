@@ -1,15 +1,18 @@
 package game.enemy;
 
+import game.frameCounter;
+import physics.BoxColider;
+import physics.Physics;
 import game.GameObject;
-import game.Spherebullet;
 import game.render.Animation;
 import tklibs.SpriteUtils;
 
 import java.awt.image.BufferedImage;
-import java.lang.management.BufferPoolMXBean;
 import java.util.ArrayList;
 
-public class Enemy extends GameObject {
+public class Enemy extends GameObject implements Physics {
+    BoxColider boxColider;
+    frameCounter friceCounter;
     public Enemy()
     {
         ArrayList<BufferedImage> images = new ArrayList<>();
@@ -20,7 +23,9 @@ public class Enemy extends GameObject {
         //load add anh
         this.renderer = new Animation(images);
         this.velocity.set(0,1);
+        this.boxColider = new BoxColider(this,30,30);
         //this.position.substract(0,1);
+        this.friceCounter = new frameCounter(20);
     }
     @Override
     public void run() {
@@ -48,12 +53,17 @@ public class Enemy extends GameObject {
     }
         int count;
     private void fire() {
-        count ++;
-        if(count >20)//3 vien 1 giay 20mls
+
+        if(this.friceCounter.run())//3 vien 1 giay 20mls
         {
             Enemybullet bullet = new Enemybullet();
             bullet.position.set(this.position);
-            count =0;
+             friceCounter.reset();// chay lai = 0
         }
+    }
+
+    @Override
+    public BoxColider getBoxColider() {
+        return this.boxColider;
     }
 }

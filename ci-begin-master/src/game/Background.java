@@ -19,6 +19,7 @@ public class Background extends GameObject{
         this.renderer = new SingleImageRenderer(image);
         this.position.set(0,600 - image.getHeight());
         this.velocity.set(0,1);
+        this.anchor.set(0,0);
     }
 //
 //    public void render(Graphics g) {

@@ -14,9 +14,12 @@ public class GamePanel extends JPanel {
 //    static ArrayList<PlayerBullet> bullets; //TODO: continue editing
 
     public GamePanel() {
-        new Background();
-        new Player();
-        Enemy enemy = new Enemy();
+//        new Background();
+//        new Player();
+//        Enemy enemy = new Enemy();
+        GameObject.recyle(Background.class);
+        GameObject.recyle(Player.class);
+         GameObject enemy=GameObject.recyle(Enemy.class);
         enemy.position.set(100,200);
         //new ArrayList<>();
 

@@ -16,7 +16,7 @@ public class Player extends GameObject implements Physics {
         Sphere sphereLeft;
         Sphere sphereRight;
     BoxColider boxColider;
-    frameCounter friceCounter;
+    frameCounter friceCounter,immuneCounter;
     int hp;
     boolean imune;// bat tu cmnr
 //    BufferedImage image;
@@ -101,21 +101,21 @@ public class Player extends GameObject implements Physics {
     }
 
     private void limitPosition() {
-        if(this.position.y < 0)
+        if(this.position.y < 30)
         {
-            this.position.y=0;// neu no < 0 thi cho gan cho no ow diem bat dau
+            this.position.y=30;// neu no < 0 thi cho gan cho no ow diem bat dau
         }
-        if (this.position.y > 600- 48)
+        if (this.position.y > 600- 35)
         {
-            this.position.y = 600- 48; // neu chieu cao > 600 gan = khung mafn hinh
+            this.position.y = 600- 35; // neu chieu cao > 600 gan = khung mafn hinh
         }
-        if(this.position.x < 0)
+        if(this.position.x < 36)
         {
-            this.position.x =0;
+            this.position.x =36;
         }
-        if(this.position.x > 384- 32)
+        if(this.position.x > 384- 39)
         {
-            this.position.x =  384- 32;
+            this.position.x =  384- 39;
         }
     }
 
@@ -154,7 +154,7 @@ public class Player extends GameObject implements Physics {
     }
 
     public void takeDamage(int damege) {
-        if (this.imune= true)
+        if (this.imune )
         {
             return;
         }

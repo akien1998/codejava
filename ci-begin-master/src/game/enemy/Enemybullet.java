@@ -40,6 +40,7 @@ public class Enemybullet extends GameObject implements Physics {
         if (this.position.y > 900)
         {
             this.deactive();
+
         }
     }
 
